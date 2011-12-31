@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string-array name="google_translate_locale_list_name">
+		<item>Arabic</item>
+		<item>Bulgarian</item>
+		<item>Catalan</item>
+		<item>Traditional Chinese (Taiwan)</item>
+		<item>Simplified Chinese</item>
+		<item>Croatian</item>
+		<item>Czech</item>
+		<item>Danish</item>
+		<item>Dutch</item>
+		<item>English</item>
+		<item>English UK</item>
+		<item>Filipino</item>
+		<item>Finnish</item>
+		<item>French</item>
+		<item>German</item>
+		<item>Greek</item>
+		<item>Hebrew</item>
+		<item>Hindi</item>
+		<item>Hungarian</item>
+		<item>Indonesian</item>
+		<item>Italian</item>
+		<item>Japanese</item>
+		<item>Korean</item>
+		<item>Latvian</item>
+		<item>Lithuanian</item>
+		<item>Norwegian</item>
+		<item>Polish</item>
+		<item>Portuguese (Brazilian)</item>
+		<item>Portuguese (Portugal)</item>
+		<item>Romanian</item>
+		<item>Russian</item>
+		<item>Serbian</item>
+		<item>Slovakian</item>
+		<item>Slovenian</item>
+		<item>Spanish</item>
+		<item>Swedish</item>
+		<item>Thai</item>
+		<item>Turkish</item>
+		<item>Ukrainian</item>
+		<item>Vietnamese</item>
+	</string-array>
+	<string-array name="google_translate_locale_list_value">
+		<item>ar</item>
+		<item>bg</item>
+		<item>ca</item>
+		<item>zh_TW</item>
+		<item>zh_CN</item>
+		<item>hr</item>
+		<item>cs</item>
+		<item>da</item>
+		<item>nl</item>
+		<item>en</item>
+		<item>en_GB</item>
+		<item>fil</item>
+		<item>fi</item>
+		<item>fr</item>
+		<item>de</item>
+		<item>el</item>
+		<item>iw</item>
+		<item>hi</item>
+		<item>hu</item>
+		<item>id</item>
+		<item>it</item>
+		<item>ja</item>
+		<item>ko</item>
+		<item>lv</item>
+		<item>lt</item>
+		<item>no</item>
+		<item>pl</item>
+		<item>pt_BR</item>
+		<item>pt_PT</item>
+		<item>ro</item>
+		<item>ru</item>
+		<item>sr</item>
+		<item>sk</item>
+		<item>sl</item>
+		<item>es</item>
+		<item>sv</item>
+		<item>th</item>
+		<item>tr</item>
+		<item>uk</item>
+		<item>vi</item>
+	</string-array>
+</resources>
