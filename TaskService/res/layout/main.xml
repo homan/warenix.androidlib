@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/hello" />
+
+    <Button
+        android:id="@+id/addTask"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="add task" />
+
+    <TextView
+        android:id="@+id/queueSize"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:text="0" />
+
+    <ToggleButton
+        android:id="@+id/startService"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:textOff="Stopped"
+        android:textOn="Running" />
+
+    <ListView
+        android:id="@+id/currentTask"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" >
+    </ListView>
+
+</LinearLayout>
