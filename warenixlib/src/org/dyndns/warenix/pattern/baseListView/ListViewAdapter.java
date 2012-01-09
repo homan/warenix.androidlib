@@ -1,5 +1,6 @@
 package org.dyndns.warenix.pattern.baseListView;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 import android.app.Activity;
@@ -84,5 +85,24 @@ public class ListViewAdapter extends BaseAdapter implements AsyncRefreshable {
 	public boolean isChildVisible(int position) {
 		return position >= listView.getFirstVisiblePosition()
 				&& position <= listView.getLastVisiblePosition();
+	}
+
+	/**
+	 * subclass show override this method to dump the list view items to
+	 * serializable
+	 * 
+	 * @return
+	 */
+	public Serializable getItemList() {
+		return null;
+	}
+
+	/**
+	 * subclass show override this method to recreate list view item from raw
+	 * item list
+	 * 
+	 * @return
+	 */
+	public void setItemList(Serializable newItemList) {
 	}
 }
