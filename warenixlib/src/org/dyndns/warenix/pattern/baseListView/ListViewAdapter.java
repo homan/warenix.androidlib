@@ -82,6 +82,11 @@ public class ListViewAdapter extends BaseAdapter implements AsyncRefreshable {
 
 	}
 
+	@Override
+	public void cancelAsyncRefresh() {
+
+	}
+
 	public boolean isChildVisible(int position) {
 		return position >= listView.getFirstVisiblePosition()
 				&& position <= listView.getLastVisiblePosition();

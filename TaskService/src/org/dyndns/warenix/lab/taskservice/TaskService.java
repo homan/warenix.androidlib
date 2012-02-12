@@ -3,6 +3,7 @@ package org.dyndns.warenix.lab.taskservice;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -102,6 +103,12 @@ public class TaskService extends IntentService {
 
 	public static boolean isRunning() {
 		return mRunning;
+	}
+
+	public static void addBackgroundTask(Context context, BackgroundTask task) {
+		Intent intent = new Intent(context, TaskService.class);
+		intent.putExtra("task", task);
+		context.startService(intent);
 	}
 
 }

@@ -39,7 +39,7 @@ public class TouchUtil {
 
 		image.setScaleType(ScaleType.CENTER_INSIDE);
 
-		matrix.set(image.getImageMatrix());
+		//matrix.set(image.getImageMatrix());
 
 		image.setImageMatrix(matrix);
 		image.setOnTouchListener(new OnTouchListener() {

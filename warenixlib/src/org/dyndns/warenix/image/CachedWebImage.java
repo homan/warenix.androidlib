@@ -16,7 +16,7 @@ import android.widget.ProgressBar;
 
 public class CachedWebImage extends WebImage {
 
-	static SDCache sdCache = new SDCache("mission");
+	static SDCache sdCache = null;
 
 	public void startDownloadImage(String key, String url, ImageView image,
 			ProgressBar progressBar) {
@@ -73,6 +73,10 @@ public class CachedWebImage extends WebImage {
 		bmpFactoryOptions.inSampleSize = inSampleSize;
 		bmpFactoryOptions.inJustDecodeBounds = false;
 		return BitmapFactory.decodeFile(fullLocalFilePath);
+	}
+
+	public static void setCacheDir(String cacheDir) {
+		sdCache = new SDCache(cacheDir);
 	}
 
 	class DownloadImageAsyncTask extends AsyncTask<String, Integer, Bitmap>
