@@ -110,4 +110,5 @@ public class ListViewAdapter extends BaseAdapter implements AsyncRefreshable {
 	 */
 	public void setItemList(Serializable newItemList) {
 	}
+
 }
