@@ -72,7 +72,7 @@ public class CachedWebImage extends WebImage {
 		}
 		bmpFactoryOptions.inSampleSize = inSampleSize;
 		bmpFactoryOptions.inJustDecodeBounds = false;
-		return BitmapFactory.decodeFile(fullLocalFilePath);
+		return BitmapFactory.decodeFile(fullLocalFilePath, bmpFactoryOptions);
 	}
 
 	public static void setCacheDir(String cacheDir) {
