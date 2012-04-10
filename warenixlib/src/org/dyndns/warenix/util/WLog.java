@@ -4,7 +4,7 @@ import android.util.Log;
 
 public class WLog {
 
-	private static String APP_NAME;
+	private static String APP_NAME = "";
 
 	public static void d(String TAG, String message) {
 		Log.d(TAG, getAppName() + ":" + message);
