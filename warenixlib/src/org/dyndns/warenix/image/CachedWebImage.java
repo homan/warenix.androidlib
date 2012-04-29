@@ -79,6 +79,10 @@ public class CachedWebImage extends WebImage {
 		sdCache = new SDCache(cacheDir);
 	}
 
+	public static void removeCacheDir(String cacheDir) {
+		sdCache.removeAllFiles();
+	}
+
 	class DownloadImageAsyncTask extends AsyncTask<String, Integer, Bitmap>
 			implements ProgressListener {
 

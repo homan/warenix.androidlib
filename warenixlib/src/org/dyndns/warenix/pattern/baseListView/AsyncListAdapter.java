@@ -32,6 +32,7 @@ public class AsyncListAdapter extends ListViewAdapter {
 
 		});
 
+		cancelAsyncRefresh();
 		mAsyncRefreshTask = new AsyncRefreshTask(mAsyncRefreshListener,
 				mBackgroundLogic);
 		mAsyncRefreshTask.execute();

@@ -119,4 +119,14 @@ public class SDCache {
 		Log.d("SDCache", String.format("url[%s] to [%s]", url, finalFilename));
 		return finalFilename;
 	}
+
+	public void removeAllFiles() {
+		File dir = new File(fullLocalDirPath);
+		if (dir.isDirectory()) {
+			String[] children = dir.list();
+			for (int i = 0; i < children.length; i++) {
+				new File(dir, children[i]).delete();
+			}
+		}
+	}
 }
