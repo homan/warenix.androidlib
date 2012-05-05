@@ -3,8 +3,6 @@ package org.dyndns.warenix.alarm.app;
 import java.util.ArrayList;
 
 import org.dyndns.warenix.alarm.R;
-import org.dyndns.warenix.com.google.calendar.CalendarList.CalendarListItem;
-import org.dyndns.warenix.com.google.calendar.GoogleCalendarMaster;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -42,19 +40,6 @@ public class AlarmActivity extends FragmentActivity implements
 	}
 
 	protected void onReady() {
-		new Thread() {
-			public void run() {
-				final ArrayList<CalendarListItem> calendarList = GoogleCalendarMaster
-						.getAllCalendar(mAccessToken);
-				runOnUiThread(new Runnable() {
-					public void run() {
-						Toast.makeText(getApplicationContext(),
-								calendarList.size() + " calendars retrieved",
-								Toast.LENGTH_SHORT).show();
-					}
-				});
-			}
-		}.start();
 	}
 
 	@Override
