@@ -17,7 +17,9 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONException;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -25,7 +27,6 @@ import android.view.Window;
 import android.webkit.WebChromeClient;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 public class GoogleOAuthActivity extends Activity {
 	static final String TAG = "GoogleOAuthActivity";
@@ -35,10 +36,13 @@ public class GoogleOAuthActivity extends Activity {
 	public static final String BUNDLE_APP_INFO = "app_info";
 	public static final String BUNDLE_OAUTH_LISTENER = "oauth_listener";
 	public static final String BUNDLE_REFRESH_ACCESS_TOKEN = "refresh_access_token";
+	public static final String BUNDLE_FLAG_DO_IN_BACKGROUND = "do_in_background_flag";
 	public static final String RESULT_CODE = "code";
 
 	private GoogleAppInfo mAppInfo;
 	private GoogleOAuthListener mListener;
+
+	boolean mIsDoInBackground;
 
 	/** Called when the activity is first created. */
 	@Override
@@ -51,10 +55,29 @@ public class GoogleOAuthActivity extends Activity {
 
 		boolean isRefresh = getIntent().getBooleanExtra(
 				BUNDLE_REFRESH_ACCESS_TOKEN, false);
+		mIsDoInBackground = getIntent().getBooleanExtra(
+				BUNDLE_FLAG_DO_IN_BACKGROUND, true);
 		final GoogleOAuthAccessToken accessToken = GoogleOAuthAccessToken
 				.load(this);
 		if (isRefresh && accessToken != null) {
-			Toast.makeText(this, "Refresh token", Toast.LENGTH_SHORT).show();
+			final AlertDialog diag = new AlertDialog.Builder(
+					GoogleOAuthActivity.this)
+					.setTitle("Google OAuth")
+					// .setView(view)
+					.setMessage(
+							"Refreshing your token... Please wait a moment.")
+					.setPositiveButton("OK",
+							new DialogInterface.OnClickListener() {
+								public void onClick(
+										DialogInterface dialoginterface, int i) {
+								}
+							})
+					.setNegativeButton("Cancel",
+							new DialogInterface.OnClickListener() {
+								public void onClick(
+										DialogInterface dialoginterface, int i) {
+								}
+							}).show();
 
 			new Thread() {
 				public void run() {
@@ -65,15 +88,26 @@ public class GoogleOAuthActivity extends Activity {
 						accessToken.refresh(accessTokenJsonString);
 						accessToken.save(getApplicationContext());
 						onOAuthAccessTokenExchanged(accessToken);
+						setResult(RESULT_OK);
 					} catch (JSONException e) {
 						onOAuthFail(e.toString());
+						setResult(RESULT_CANCELED);
 					}
+
+					if (mIsDoInBackground) {
+						diag.dismiss();
+					}
+					finish();
 
 				}
 			}.start();
 
 		} else {
-			setupUI();
+			if (!mIsDoInBackground) {
+				setupUI();
+			} else {
+				finish();
+			}
 		}
 	}
 
@@ -138,14 +172,17 @@ public class GoogleOAuthActivity extends Activity {
 	}
 
 	public static void startOauthActivity(Context context,
-			GoogleAppInfo appInfo, boolean isRefresh,
-			GoogleOAuthListener listener) {
-		Intent intent = new Intent(context, GoogleOAuthActivity.class);
-		intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-		intent.putExtra(BUNDLE_APP_INFO, appInfo);
-		intent.putExtra(BUNDLE_REFRESH_ACCESS_TOKEN, isRefresh);
-		intent.putExtra(BUNDLE_OAUTH_LISTENER, listener);
-		context.startActivity(intent);
+			GoogleAppInfo appInfo, boolean isRefresh, boolean isDoInBackground,
+			boolean needStartActivity, GoogleOAuthListener listener) {
+		if (needStartActivity) {
+			Intent intent = new Intent(context, GoogleOAuthActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			intent.putExtra(BUNDLE_APP_INFO, appInfo);
+			intent.putExtra(BUNDLE_REFRESH_ACCESS_TOKEN, isRefresh);
+			intent.putExtra(BUNDLE_OAUTH_LISTENER, listener);
+			intent.putExtra(BUNDLE_FLAG_DO_IN_BACKGROUND, isDoInBackground);
+			context.startActivity(intent);
+		}
 	}
 
 	/**
