@@ -33,7 +33,7 @@ public class GoogleOAuthAccessToken implements Serializable {
 
 	public void save(Context context) {
 		SharedPreferences settings = context.getSharedPreferences(
-				preferenceName, 0);
+				preferenceName, Context.MODE_PRIVATE);
 		SharedPreferences.Editor editor = settings.edit();
 		editor.putString("accessToken", accessToken);
 		editor.putInt("expiresIn", expiresIn);
@@ -46,7 +46,7 @@ public class GoogleOAuthAccessToken implements Serializable {
 	public static GoogleOAuthAccessToken load(Context context) {
 		GoogleOAuthAccessToken accessToken = new GoogleOAuthAccessToken();
 		SharedPreferences settings = context.getSharedPreferences(
-				preferenceName, 0);
+				preferenceName, Context.MODE_PRIVATE);
 		accessToken.accessToken = settings.getString("accessToken", null);
 		accessToken.expiresIn = settings.getInt("expiresIn", 0);
 		accessToken.refreshToken = settings.getString("refreshToken", null);

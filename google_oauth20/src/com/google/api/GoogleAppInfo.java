@@ -22,6 +22,7 @@ public class GoogleAppInfo implements Parcelable {
 	public GoogleAppInfo(Context context) {
 		clientId = context.getString(R.string.client_id);
 		clientSecret = context.getString(R.string.client_secret);
+		scope = context.getString(R.string.scope);
 	}
 
 	public GoogleAppInfo(Parcel in) {

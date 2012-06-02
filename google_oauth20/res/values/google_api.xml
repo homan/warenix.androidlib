@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <string name="client_id">1078282844221.apps.googleusercontent.com</string>
     <string name="client_secret">o5Ow3XCr1VBjinjIDfjxy0AK</string>
+    <string name="scope">https://www.google.com/calendar/feeds/</string>
+
 </resources>
