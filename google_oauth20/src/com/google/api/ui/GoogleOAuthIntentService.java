@@ -104,7 +104,12 @@ public class GoogleOAuthIntentService extends IntentService {
 				mAppInfo.clientId, mAppInfo.clientSecret,
 				accessToken.refreshToken);
 
-		saveAccessToken(accessToken, accessTokenJsonString);
+		if (accessTokenJsonString == null) {
+			// something happened we can't refresh token
+			intent.putExtra(BUNDLE_OAUTH_ERROR_CODE, "-1");
+		} else {
+			saveAccessToken(accessToken, accessTokenJsonString);
+		}
 		notifyHandler(intent);
 	}
 
