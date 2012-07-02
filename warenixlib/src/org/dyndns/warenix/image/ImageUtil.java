@@ -50,7 +50,11 @@ public class ImageUtil {
 			bitmap.recycle();
 			bitmap = null;
 
-			return new File(writeBitmapToFile(resizedBitmap, fullLocalFilePath));
+			File file = new File(writeBitmapToFile(resizedBitmap,
+					fullLocalFilePath));
+			resizedBitmap.recycle();
+			resizedBitmap = null;
+			return file;
 		}
 		return new File(fullLocalFilePath);
 	}

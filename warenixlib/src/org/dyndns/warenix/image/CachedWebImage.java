@@ -1,5 +1,9 @@
 package org.dyndns.warenix.image;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import org.dyndns.warenix.util.DownloadUtil.ProgressListener;
 import org.dyndns.warenix.util.SDCache;
 import org.dyndns.warenix.util.TouchUtil;
@@ -16,6 +20,7 @@ import android.widget.ProgressBar;
 
 public class CachedWebImage extends WebImage {
 
+	private static final String CACHE_SUFFIX = ".cached";
 	static SDCache sdCache = null;
 
 	public void startDownloadImage(String key, String url, ImageView image,
@@ -29,7 +34,8 @@ public class CachedWebImage extends WebImage {
 		// "http://upload.wikimedia.org/wikipedia/commons/7/7a/Basketball.png";
 
 		String saveAsFilename = SDCache.hashUrl(url);
-		String fullLocalFilePath = sdCache.isFileOnSD(saveAsFilename);
+		String fullLocalFilePath = sdCache.isFileOnSD(saveAsFilename
+				+ CACHE_SUFFIX);
 		if (fullLocalFilePath != null) {
 			Bitmap bitmap = convertFileToBitmap(fullLocalFilePath);
 			image.setImageBitmap(bitmap);
@@ -52,6 +58,7 @@ public class CachedWebImage extends WebImage {
 
 		BitmapFactory.Options bmpFactoryOptions = new BitmapFactory.Options();
 		bmpFactoryOptions.inJustDecodeBounds = true;
+		bmpFactoryOptions.inPurgeable = true;
 		BitmapFactory.decodeFile(fullLocalFilePath, bmpFactoryOptions);
 
 		int srcWidth = bmpFactoryOptions.outWidth;
@@ -71,8 +78,12 @@ public class CachedWebImage extends WebImage {
 			inSampleSize *= 2;
 		}
 		bmpFactoryOptions.inSampleSize = inSampleSize;
+		bmpFactoryOptions.inDither = true;
 		bmpFactoryOptions.inJustDecodeBounds = false;
-		return BitmapFactory.decodeFile(fullLocalFilePath, bmpFactoryOptions);
+		Bitmap scaledBitmap = BitmapFactory.decodeFile(fullLocalFilePath,
+				bmpFactoryOptions);
+
+		return scaledBitmap;
 	}
 
 	public static void setCacheDir(String cacheDir) {
@@ -83,8 +94,33 @@ public class CachedWebImage extends WebImage {
 		sdCache.removeAllFiles();
 	}
 
+	private static void writeAsCache(Bitmap bitmap, String fullLocalFilePath) {
+		if (bitmap == null || bitmap.isRecycled())
+			return;
+
+		FileOutputStream out = null;
+		try {
+			out = new FileOutputStream(fullLocalFilePath + CACHE_SUFFIX);
+			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} finally {
+			if (out != null) {
+				try {
+					out.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+	}
+
 	class DownloadImageAsyncTask extends AsyncTask<String, Integer, Bitmap>
 			implements ProgressListener {
+
+		String url;;
+		String saveAsFilename;
+		String fullLocalFilePath;
 
 		protected void onProgressUpdate(Integer... progress) {
 			if (progressBar != null) {
@@ -101,12 +137,14 @@ public class CachedWebImage extends WebImage {
 
 		@Override
 		protected Bitmap doInBackground(String... args) {
-			String url = args[0];
-			String saveAsFilename = SDCache.hashUrl(url);
-			String fullLocalFilePath = sdCache.downloadFileToSD(url,
-					saveAsFilename, null);
+			url = args[0];
+			saveAsFilename = SDCache.hashUrl(url);
+			fullLocalFilePath = sdCache.downloadFileToSD(url, saveAsFilename,
+					null);
 
-			return convertFileToBitmap(fullLocalFilePath);
+			Bitmap bitmap = convertFileToBitmap(fullLocalFilePath);
+			writeAsCache(bitmap, fullLocalFilePath);
+			return bitmap;
 		}
 
 		protected void onPostExecute(Bitmap bitmap) {
