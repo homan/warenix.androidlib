@@ -57,12 +57,22 @@ public class SwitchPageAdapter extends ArrayAdapter<String> {
 	// return header view of drop down
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		View view = convertView;
+		if (convertView == null) {
+			LayoutInflater inflater = (LayoutInflater) parent.getContext()
+					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+			view = inflater.inflate(R.layout.switch_page_dropdown, null);
+			ViewHolder viewHolder = new ViewHolder();
+			viewHolder.site = (TextView) view.findViewById(R.id.label);
+			viewHolder.icon = (ImageView) view.findViewById(R.id.icon);
+			view.setTag(viewHolder);
+		}
+
+		ViewHolder viewHolder = (ViewHolder) view.getTag();
+
 		String siteLink = position == 0 ? mThreadTitle : "\t\t"
 				+ (position + 1) + "\t";
-		LayoutInflater inflater = (LayoutInflater) parent.getContext()
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		View view = inflater.inflate(R.layout.switch_page_dropdown, null);
-		TextView site = (TextView) view.findViewById(R.id.label);
+		TextView site = viewHolder.site;
 		if (position == mSelectedPosition) {
 			site.setTextColor(Color.YELLOW);
 		} else {
@@ -71,10 +81,12 @@ public class SwitchPageAdapter extends ArrayAdapter<String> {
 		site.setText(siteLink);
 
 		// TODO mark visited
-		ImageView icon = (ImageView) view.findViewById(R.id.icon);
+		ImageView icon = viewHolder.icon;
 		boolean visited = position == 0;
 		if (!visited) {
 			icon.setImageResource(R.drawable.rectangle);
+		} else {
+			icon.setImageBitmap(null);
 		}
 
 		return view;
@@ -82,5 +94,10 @@ public class SwitchPageAdapter extends ArrayAdapter<String> {
 
 	public void setSelectedPosition(int selectedItemIndex) {
 		mSelectedPosition = selectedItemIndex;
-	}	
+	}
+
+	static class ViewHolder {
+		TextView site;
+		ImageView icon;
+	}
 }
