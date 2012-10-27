@@ -14,8 +14,6 @@ public class BaseActionBarActivity extends SherlockFragmentActivity implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		setContentView(R.layout.list_navigation);
 	}
 
 	public void setActionBarList(SpinnerAdapter adapter, int selectedIndex) {
@@ -52,5 +50,9 @@ public class BaseActionBarActivity extends SherlockFragmentActivity implements
 	 */
 	public boolean onNavigationItemChanged(int itemPosition, long itemId) {
 		return true;
+	}
+
+	public void resetListNavigation() {
+		mLastSelectedItemPosition = -1;
 	}
 }
