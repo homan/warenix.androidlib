@@ -11,6 +11,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/**
+ * adapter of the list navigation of ABSActionbarActivity
+ * 
+ * @author warenix
+ * 
+ */
 public class SwitchPageAdapter extends ArrayAdapter<String> {
 
 	private String mThreadTitle = "";
@@ -45,12 +51,6 @@ public class SwitchPageAdapter extends ArrayAdapter<String> {
 	@Override
 	public View getDropDownView(int position, View convertView, ViewGroup parent) {
 		View v = getView(position, convertView, parent);
-		// if (v.getBackground() == null) {
-		// v.setBackgroundColor(Color.parseColor("#00ff00"));
-		// } else {
-		// v.getBackground().setColorFilter(Color.parseColor("#00ff00"),
-		// PorterDuff.Mode.DARKEN);
-		// }
 		return v;
 	}
 
