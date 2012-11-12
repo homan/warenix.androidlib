@@ -100,7 +100,7 @@ public class CachedWebImage extends WebImage {
 
 		FileOutputStream out = null;
 		try {
-			out = new FileOutputStream(fullLocalFilePath + CACHE_SUFFIX);
+			out = new FileOutputStream(fullLocalFilePath);
 			bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
@@ -138,7 +138,7 @@ public class CachedWebImage extends WebImage {
 		@Override
 		protected Bitmap doInBackground(String... args) {
 			url = args[0];
-			saveAsFilename = SDCache.hashUrl(url);
+			saveAsFilename = SDCache.hashUrl(url) + CACHE_SUFFIX;
 			fullLocalFilePath = sdCache.downloadFileToSD(url, saveAsFilename,
 					null);
 
