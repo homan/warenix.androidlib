@@ -4,14 +4,15 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import org.dyndns.warenix.util.AsyncTask;
 import org.dyndns.warenix.util.DownloadUtil.ProgressListener;
 import org.dyndns.warenix.util.SDCache;
 import org.dyndns.warenix.util.TouchUtil;
+import org.dyndns.warenix.util.WLog;
 
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
@@ -19,12 +20,12 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 
 public class CachedWebImage extends WebImage {
-
+	private static final String TAG = "CachedWebImage";
 	private static final String CACHE_SUFFIX = ".cached";
 	static SDCache sdCache = null;
 
-	public void startDownloadImage(String key, String url, ImageView image,
-			ProgressBar progressBar) {
+	public AsyncTask startDownloadImage(String key, String url,
+			ImageView image, ProgressBar progressBar) {
 		this.image = image;
 		this.progressBar = progressBar;
 		this.url = url;
@@ -39,10 +40,12 @@ public class CachedWebImage extends WebImage {
 		if (fullLocalFilePath != null) {
 			Bitmap bitmap = convertFileToBitmap(fullLocalFilePath);
 			image.setImageBitmap(bitmap);
-
+			return null;
 		} else {
 			DownloadImageAsyncTask task = new DownloadImageAsyncTask();
 			task.execute(url);
+			return task;
+			// org.dyndns.warenix.util.AsyncTaskUtil.executeorg.dyndns.warenix.util.AsyncTask(task);
 		}
 
 	}
@@ -80,10 +83,14 @@ public class CachedWebImage extends WebImage {
 		bmpFactoryOptions.inSampleSize = inSampleSize;
 		bmpFactoryOptions.inDither = true;
 		bmpFactoryOptions.inJustDecodeBounds = false;
-		Bitmap scaledBitmap = BitmapFactory.decodeFile(fullLocalFilePath,
-				bmpFactoryOptions);
-
-		return scaledBitmap;
+		try {
+			Bitmap scaledBitmap = BitmapFactory.decodeFile(fullLocalFilePath,
+					bmpFactoryOptions);
+			return scaledBitmap;
+		} catch (OutOfMemoryError e) {
+			WLog.d(TAG, String.format("OOM! inSampleSize[%d]", inSampleSize));
+			throw e;
+		}
 	}
 
 	public static void setCacheDir(String cacheDir) {
@@ -115,8 +122,8 @@ public class CachedWebImage extends WebImage {
 		}
 	}
 
-	class DownloadImageAsyncTask extends AsyncTask<String, Integer, Bitmap>
-			implements ProgressListener {
+	public class DownloadImageAsyncTask extends
+			AsyncTask<String, Integer, Bitmap> implements ProgressListener {
 
 		String url;;
 		String saveAsFilename;
@@ -153,7 +160,7 @@ public class CachedWebImage extends WebImage {
 			if (progressBar != null) {
 				progressBar.setVisibility(View.INVISIBLE);
 			}
-			if (bitmap != null) {
+			if (bitmap != null && !isCancelled()) {
 
 				if (webImageListener != null) {
 					webImageListener.onImageSet(image, bitmap);

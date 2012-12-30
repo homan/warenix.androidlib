@@ -1,7 +1,6 @@
 package org.dyndns.warenix.pattern.baseListView;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.widget.ListView;
 
 public class AsyncListAdapter extends ListViewAdapter {
@@ -45,7 +44,8 @@ public class AsyncListAdapter extends ListViewAdapter {
 		}
 	}
 
-	private static class AsyncRefreshTask extends AsyncTask<Void, Void, Void> {
+	private static class AsyncRefreshTask extends
+			org.dyndns.warenix.util.AsyncTask<Void, Void, Void> {
 		AsyncRefreshListener mAsyncRefreshListener;
 		BackgroundLogic mBackgroundLogic;
 		Object result;

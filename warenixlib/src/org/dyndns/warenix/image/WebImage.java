@@ -5,18 +5,15 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashSet;
 
+import org.dyndns.warenix.util.AsyncTask;
 import org.dyndns.warenix.util.DownloadUtil;
 import org.dyndns.warenix.util.DownloadUtil.ProgressListener;
-import org.dyndns.warenix.util.ImageUtil;
 import org.dyndns.warenix.util.TouchUtil;
 
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
@@ -57,7 +54,7 @@ public class WebImage {
 
 	protected String url = "";
 
-	DownloadImageAsyncTask task;
+	DownloadImageTask task;
 
 	protected String key;
 
@@ -70,19 +67,19 @@ public class WebImage {
 	public static HashSet<String> map = new HashSet<String>();
 	public static HashSet<String> visibleMap = new HashSet<String>();
 
-	public void startDownloadImage(String key, String url, ImageView image,
-			ProgressBar progressBar) {
+	public AsyncTask startDownloadImage(String key, String url,
+			ImageView image, ProgressBar progressBar) {
 		this.image = image;
 		this.progressBar = progressBar;
 		this.url = url;
 		this.key = key;
 
-		task = new DownloadImageAsyncTask();
+		task = new DownloadImageTask();
 		task.execute(url);
-
+		return task;
 	}
 
-	class DownloadImageAsyncTask extends AsyncTask<String, Integer, Bitmap>
+	class DownloadImageTask extends AsyncTask<String, Integer, Bitmap>
 			implements ProgressListener {
 
 		protected void onProgressUpdate(Integer... progress) {
@@ -132,7 +129,7 @@ public class WebImage {
 				progressBar.setVisibility(View.INVISIBLE);
 			}
 			if (bitmap != null) {
-
+				Log.d("WebImage", "finished download, setting image view");
 				if (webImageListener != null) {
 					webImageListener.onImageSet(image, bitmap);
 				} else {
