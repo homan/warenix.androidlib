@@ -80,9 +80,9 @@ public class GoogleWebSearchMaster {
 
 		try {
 			String baseUrl = "http://ajax.googleapis.com/ajax/services/search/web";
-			String url = String.format("%s?v=1.0&q=%s&start=%d&as_qdr=%s&rsz=8",
-					baseUrl, URLEncoder.encode(query, "utf-8"), start,
-					timeFilter);
+			String url = String.format(
+					"%s?v=1.0&q=%s&start=%d&as_qdr=%s&rsz=8", baseUrl,
+					URLEncoder.encode(query, "utf-8"), start * 8, timeFilter);
 
 			HttpClient httpclient = new DefaultHttpClient();
 			httpclient.getParams().setParameter(
